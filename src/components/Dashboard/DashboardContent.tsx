@@ -1,6 +1,6 @@
 // src/components/Dashboard/DashboardContent.tsx
 import CardBlock from '@/components/UI/CardBlock'; // Usando o alias!
-import { Layout, CheckSquare, BarChart3, Users, Database, Shield, Hourglass } from 'lucide-react';
+import { Layout, CheckSquare, BarChart3, Users, Database, Shield, Hourglass, ClipboardList } from 'lucide-react';
 
 // Dados simulados para os Cards (Baseado no layout do seu vídeo)
 
@@ -21,11 +21,11 @@ const dashboardModules = [
     link: '/execucao' 
   },
   { 
-    title: 'Conclusão', 
+    title: 'Conclusão - ✅', 
     subtitle: 'Validação de itens obrigatórios e revisão.', 
     bgColor: 'bg-yellow-500', 
     icon: BarChart3, 
-    link: '/dashboard-detalhe' // Linkamos à nossa página de gráficos
+    link: '/dashboard-detalhe' 
   },
   { 
     title: 'Dados Mestres', 
@@ -48,6 +48,15 @@ const dashboardModules = [
     icon: Shield, 
     link: '/matriz-riscos' 
   },
+  
+  { 
+    title: 'Monitoramento de Processos - ✅', 
+    subtitle: 'Visualização e filtragem de todos os itens de trabalho.', 
+    bgColor: 'bg-indigo-700', 
+    icon: ClipboardList, 
+    link: '/processos' 
+  }, 
+
   { 
     title: 'TESTE DE COMPONENTES', 
     subtitle: 'sim', 

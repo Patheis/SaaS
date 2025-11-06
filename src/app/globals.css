@@ -24,3 +24,16 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+/* --- CORREÇÃO DE CONTRASTE PARA DROPDOWNS --- */
+/* Força cor de fundo e texto escuro nos elementos de opção para anular estilos do SO/Navegador */
+select {
+    /* Garante que a cor de fundo seja branca para o menu suspenso em alguns navegadores */
+    background-color: white !important;
+}
+
+select option {
+    background-color: white !important;
+    color: #1f2937 !important; /* Força cor de texto escura (gray-800) */
+}
+
