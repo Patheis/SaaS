@@ -1,5 +1,8 @@
 // src/app/page.tsx (Modificado)
 
+'use client'; // <-- Adicione esta linha!
+
+
 // Use o alias '@/...' para importar de src/
 import Header from '@/components/Layout/Header';
 import DashboardContent from '@/components/Dashboard/DashboardContent';
