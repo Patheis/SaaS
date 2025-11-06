@@ -1,13 +1,8 @@
 // src/components/Dashboard/ActionIndicator.tsx
 import { Target } from 'lucide-react';
+import { ActionData } from '@/data/types'; // Importando a tipagem centralizada!
 
-// Tipagem dos dados que o componente irá receber
-interface ActionData {
-  total: number;
-  vencidas: number;
-  vendidas: number; // Ou qualquer outra métrica de conclusão
-}
-
+// A tipagem local do componente usa o tipo importado
 interface ActionIndicatorProps {
   data: ActionData;
 }
@@ -27,7 +22,7 @@ export default function ActionIndicator({ data }: ActionIndicatorProps) {
         {data.total}
       </div>
 
-      {/* Detalhes (Vencidas / Vendidas) */}
+      {/* Detalhes (Vencidas / Concluídas) */}
       <div className="space-y-1 text-sm pt-2 border-t border-gray-100">
         <div className="flex justify-between items-center text-red-500">
           <span className="font-medium">Vencidas</span>
@@ -35,7 +30,7 @@ export default function ActionIndicator({ data }: ActionIndicatorProps) {
         </div>
         <div className="flex justify-between items-center text-green-600">
           <span className="font-medium">Concluídas</span>
-          <span className="font-bold">{data.vendidas}</span>
+          <span className="font-bold">{data.concluidas}</span>
         </div>
       </div>
       

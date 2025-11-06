@@ -1,13 +1,16 @@
 // src/components/UI/CardBlock.tsx
 import Link from 'next/link';
-import { LucideIcon } from 'lucide-react';
+// Removida importação de LucideIcon, pois o tipo é definido em ModuleCard (types.ts)
+import { ModuleCard } from '@/data/types'; // Importando a tipagem centralizada!
 
+// Definimos a interface do componente usando a tipagem importada.
+// NOTE: Estamos usando o nome 'Icon' para o componente, por isso a renomeação é feita na desestruturação.
 interface CardBlockProps {
-  title: string;
-  subtitle: string;
-  bgColor: string; // Ex: "bg-red-600"
-  icon: LucideIcon; // Tipo para ícones do Lucide
-  link: string;
+    title: ModuleCard['title'];
+    subtitle: ModuleCard['subtitle'];
+    bgColor: ModuleCard['bgColor'];
+    icon: ModuleCard['icon']; 
+    link: ModuleCard['link'];
 }
 
 export default function CardBlock({ title, subtitle, bgColor, icon: Icon, link }: CardBlockProps) {
