@@ -5,6 +5,7 @@ import Header from '@/components/Layout/Header';
 import React, { useState, useMemo } from 'react';
 import { Search, SlidersHorizontal, Zap, MoreHorizontal, Trash2 } from 'lucide-react';
 import { Processo, ProcessoStatus } from '@/data/types'; // Tipagem
+import PaginationControls from '@/components/UI/PaginationControls'; // Importa o componente de paginação
 
 // Dados Mockados
 const mockProcessos: Processo[] = [
@@ -17,7 +18,7 @@ const mockProcessos: Processo[] = [
   { id: 7, item: 'Validação de Escopo', dataCriacao: '2025-09-10', processo: 'Processo C', status: 'Em Análise', previsao: 'Média' },
 ];
 
-// Componente de Tabela
+// Componente de Tabela (sem alteração)
 const ProcessosTable = ({ data }: { data: Processo[] }) => {
     const getStatusColor = (status: ProcessoStatus) => {
         if (status === 'Aberto') return 'bg-red-100 text-red-800 border-red-500';
@@ -28,8 +29,6 @@ const ProcessosTable = ({ data }: { data: Processo[] }) => {
     return (
         <div className="overflow-x-auto shadow-lg rounded-xl border border-gray-200">
             <table className="min-w-full divide-y divide-gray-200">
-                
-                {/* CABEÇALHO CORRIGIDO */}
                 <thead className="bg-gray-100 border-b border-gray-300"> 
                     <tr>
                         <th className="px-6 py-4 text-left text-sm font-bold text-gray-800 uppercase tracking-wider">Item</th>
@@ -40,8 +39,6 @@ const ProcessosTable = ({ data }: { data: Processo[] }) => {
                         <th className="px-6 py-4 text-center text-sm font-bold text-gray-800 uppercase tracking-wider">Ações</th>
                     </tr>
                 </thead>
-                
-                {/* Corpo da Tabela */}
                 <tbody className="bg-white divide-y divide-gray-100"> 
                     {data.map((item) => (
                         <tr key={item.id} className="hover:bg-blue-50/50 transition duration-150"> 
@@ -119,7 +116,7 @@ export default function ProcessosPage() {
                         setSearchText(e.target.value);
                         setCurrentPage(1);
                     }}
-                    className="pl-10 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm focus:ring-blue-500 focus:border-blue-500 placeholder-gray-700 text-gray-900" // Corrigido
+                    className="pl-10 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm focus:ring-blue-500 focus:border-blue-500 placeholder-gray-700 text-gray-900" 
                 />
                 <Search className="w-4 h-4 text-gray-900 absolute left-3" />
             </div>
@@ -132,7 +129,7 @@ export default function ProcessosPage() {
                         setSelectedProcesso(e.target.value);
                         setCurrentPage(1);
                     }}
-                    className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900" // Corrigido
+                    className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900" 
                 >
                     <option value="" className="text-gray-900">TODOS OS PROCESSOS</option>
                     {processosUnicos.map(p => <option key={p} value={p} className="text-gray-900">{p}</option>)}
@@ -148,7 +145,7 @@ export default function ProcessosPage() {
                         setSelectedStatus(e.target.value);
                         setCurrentPage(1);
                     }}
-                    className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900" // Corrigido
+                    className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900" 
                 >
                     <option value="" className="text-gray-900">TODOS OS STATUS</option>
                     {statusUnicos.map(s => <option key={s} value={s} className="text-gray-900">{s}</option>)}
@@ -156,6 +153,7 @@ export default function ProcessosPage() {
                 <Zap className="w-4 h-4 text-gray-900 absolute left-2" />
             </div>
 
+            {/* Botão Limpar Filtros (Com ícone Trash2) */}
             <button 
                 onClick={() => {
                     setSearchText('');
@@ -163,9 +161,10 @@ export default function ProcessosPage() {
                     setSelectedStatus('');
                     setCurrentPage(1);
                 }}
-                className="ml-4 text-sm text-gray-500 hover:text-gray-700 transition-colors"
+                className="ml-4 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-1"
             >
-               <Trash2 className="w-4 h-4" /> {/* Ícone da lixeira ou reverter */} <span>Limpar Filtros</span>
+                <Trash2 className="w-4 h-4" /> 
+                <span>Limpar Filtros</span>
             </button>
 
         </div>
@@ -174,46 +173,16 @@ export default function ProcessosPage() {
         <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
             <ProcessosTable data={currentData} />
             
-            {/* Paginação e Controle de Itens por Página */}
-            <div className="mt-4 flex justify-between items-center text-sm text-gray-600">
-                
-                {/* Lado Esquerdo: Indicador de Quantidade e Seletor de Itens */}
-                <div className="flex items-center space-x-3"> 
-                    <span>Mostrando {currentData.length} de {filteredProcessos.length} processos</span>
-                    
-                    <select 
-                        value={itemsPerPage}
-                        onChange={(e) => {
-                            setItemsPerPage(Number(e.target.value));
-                            setCurrentPage(1);
-                        }}
-                        className="px-2 py-1 border border-gray-400 bg-white rounded-md text-gray-900"
-                    >
-                        <option value={5} className="text-gray-900">5</option>
-                        <option value={10} className="text-gray-900">10</option>
-                        <option value={20} className="text-gray-900">20</option>
-                        <option value={50} className="text-gray-900">50</option>
-                    </select>
-                </div>
-
-                {/* Lado Direito: Botões Anterior/Próxima */}
-                <div className="space-x-2">
-                    <button 
-                        onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))} 
-                        disabled={currentPage === 1}
-                        className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
-                    >
-                        Anterior
-                    </button>
-                    <button 
-                        onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))} 
-                        disabled={currentPage === totalPages || filteredProcessos.length === 0}
-                        className="px-3 py-1 border rounded disabled:opacity-50 hover:bg-gray-100 transition-colors"
-                    >
-                        Próxima
-                    </button>
-                </div>
-            </div>
+            {/* Componente de Paginação Reutilizável */}
+            <PaginationControls
+                currentPage={currentPage}
+                totalPages={totalPages}
+                currentItemsCount={currentData.length}
+                totalFilteredItems={filteredProcessos.length}
+                itemsPerPage={itemsPerPage}
+                setItemsPerPage={setItemsPerPage}
+                setCurrentPage={setCurrentPage}
+            />
         </div>
       </div>
     </div>

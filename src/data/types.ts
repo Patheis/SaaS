@@ -37,3 +37,18 @@ export interface Processo {
   previsao: 'Alta' | 'Média' | 'Baixa';
   vencimento?: string; // Opcional para dados simulados
 }
+
+// src/data/types.ts (Adicionar ao final)
+
+// 5. Tipagem Específica para Logs
+export type LogStatus = 'Sucesso' | 'Falha' | 'Aviso';
+
+export interface LogEntry {
+  id: number;
+  usuario: string;
+  nome: string;
+  responsabilidade: string;
+  acao: string;
+  data: string;
+  status: LogStatus;
+}

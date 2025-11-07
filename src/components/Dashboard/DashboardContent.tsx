@@ -35,7 +35,7 @@ const dashboardModules = [
     link: '/dados-mestres' 
   },
   { 
-    title: 'Gestão do Sistema', 
+    title: 'Gestão do Sistema - ✅', 
     subtitle: 'Usuários, perfis, atribuições e workflow.', 
     bgColor: 'bg-green-600', 
     icon: Users, 
