@@ -1,13 +1,20 @@
 // src/components/Layout/Sidebar.tsx
 
 import Link from 'next/link';
+<<<<<<< HEAD
 import { Home, ClipboardList, AlertTriangle, Settings, Layout, BarChart3, Users } from 'lucide-react';
+=======
+import { Home, ClipboardList, AlertTriangle, Settings, Layout, BarChart3 } from 'lucide-react';
+>>>>>>> e6adbd6c9e9b209594296dffb5173a840cc7cf52
 
 const navItems = [
   { href: '/', icon: Home, label: 'Início' },
   { href: '/dashboard-detalhe', icon: BarChart3, label: 'Conclusao' }, 
   { href: '/processos', icon: ClipboardList, label: 'Processos' },
+<<<<<<< HEAD
   { href: '/gestao-sistema', icon: Users, label: 'Gestao' },
+=======
+>>>>>>> e6adbd6c9e9b209594296dffb5173a840cc7cf52
   { href: '/configuracoes', icon: Settings, label: 'Configurações' },
 ];
 
