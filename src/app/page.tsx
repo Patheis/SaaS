@@ -1,33 +1,25 @@
-// src/app/page.tsx (Modificado)
-
-'use client'; // <-- Adicione esta linha!
-
-
-// Use o alias '@/...' para importar de src/
 import Header from '@/components/Layout/Header';
 import DashboardContent from '@/components/Dashboard/DashboardContent';
 import ActionIndicator from '@/components/Dashboard/ActionIndicator'; 
+import DashboardLayout from '@/components/Layout/DashboardLayout'; // Importação essencial
 
-// 1. Importar a tipagem centralizada
-import { ActionData } from '@/data/types';
-
-// 2. Aplicar o tipo ActionData ao nosso mock de dados
-const actionsData: ActionData = {
+// Dados de exemplo para o indicador
+const actionsData = {
   total: 25,
   vencidas: 5,
-  concluidas: 20, // Mudamos 'vendidas' para 'concluidas' para consistência
+  concluidas: 20,
 };
 
 export default function DashboardPage() {
   return (
-    <div>
+    // ⬅️ ENVOLVENDO A PÁGINA COM O NOVO LAYOUT
+    <DashboardLayout>
       <Header title="EMPRESA TESTE" subtitle="Olá, João Vitor" />
       
       <div className="p-8">
         
         {/* Indicador de Ações no topo */}
         <div className="mb-8">
-          {/* Implementação do componente ActionIndicator */}
           <ActionIndicator data={actionsData} /> 
         </div>
 
@@ -35,6 +27,6 @@ export default function DashboardPage() {
         <DashboardContent />
         
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

@@ -52,3 +52,4 @@ export interface LogEntry {
   data: string;
   status: LogStatus;
 }
+

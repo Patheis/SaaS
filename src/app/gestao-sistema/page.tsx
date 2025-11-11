@@ -1,14 +1,12 @@
-// src/app/gestao-sistema/page.tsx
 'use client';
 
 import Header from '@/components/Layout/Header';
 import React, { useState, useMemo } from 'react';
-import { Search, User, Clock, CheckCircle, RotateCcw } from 'lucide-react';
-// IMPORTAÇÃO CORRIGIDA: Precisamos do PaginationControls
+import { Search, User, CheckCircle, RotateCcw } from 'lucide-react';
 import PaginationControls from '@/components/UI/PaginationControls'; 
-import { ProcessoStatus } from '@/data/types'; 
+import DashboardLayout from '@/components/Layout/DashboardLayout'; // ⬅️ IMPORTADO!
 
-// Tipagem Específica para Logs (ADICIONAR À src/data/types.ts ANTES DO COMMIT)
+// NOTA: A tipagem LogEntry precisa estar em src/data/types.ts para o projeto compilar
 interface LogEntry {
   id: number;
   usuario: string;
@@ -30,7 +28,7 @@ const mockLogs: LogEntry[] = [
   { id: 7, usuario: 'carlos', nome: 'Carlos Silva', responsabilidade: 'Equipe', acao: 'Logout', data: '2025-11-06 12:00', status: 'Sucesso' },
 ];
 
-// Componente da Tabela de Logs (sem alteração)
+// Componente da Tabela de Logs
 const LogsTable = ({ data }: { data: LogEntry[] }) => {
     const getStatusColor = (status: LogEntry['status']) => {
         if (status === 'Falha') return 'bg-red-100 text-red-800 border-red-500';
@@ -79,7 +77,7 @@ export default function GestaoSistemaPage() {
   const [selectedResponsabilidade, setSelectedResponsabilidade] = useState('');
   const [selectedStatus, setSelectedStatus] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(10); // Adicionado estado itemsPerPage
+  const [itemsPerPage, setItemsPerPage] = useState(10); 
 
   const filteredLogs = useMemo(() => {
     let list = mockLogs;
@@ -104,77 +102,80 @@ export default function GestaoSistemaPage() {
   const statusLogUnicos = useMemo(() => ['Sucesso', 'Falha', 'Aviso'], []);
 
   return (
-    <div>
-      <Header title="Gestão do Sistema" subtitle="Logs de Acesso e Auditoria" />
-      
-      <div className="p-8">
+    // ⬅️ ENVOLVIMENTO CORRETO
+    <DashboardLayout>
+      <div>
+        <Header title="Gestão do Sistema" subtitle="Logs de Acesso e Auditoria" />
         
-        {/* Componente de Filtros (Sem alteração) */}
-        <div className="bg-white p-4 rounded-xl shadow-lg flex space-x-4 mb-6 items-center border border-gray-200">
-            <h3 className="text-sm font-semibold uppercase text-gray-600">Filtros de Log:</h3>
+        <div className="p-8">
+          
+          {/* Componente de Filtros (Sem alteração) */}
+          <div className="bg-white p-4 rounded-xl shadow-lg flex space-x-4 mb-6 items-center border border-gray-200">
+              <h3 className="text-sm font-semibold uppercase text-gray-600">Filtros de Log:</h3>
 
-            {/* Filtro de Busca */}
-            <div className="relative flex items-center">
-                <input 
-                    type="text" 
-                    placeholder="Buscar Usuário ou Ação..."
-                    value={searchText}
-                    onChange={(e) => setSearchText(e.target.value)}
-                    className="pl-10 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm focus:ring-blue-500 focus:border-blue-500 placeholder-gray-700 text-gray-900"
-                />
-                <Search className="w-4 h-4 text-gray-900 absolute left-3" />
-            </div>
+              {/* Filtro de Busca */}
+              <div className="relative flex items-center">
+                  <input 
+                      type="text" 
+                      placeholder="Buscar Usuário ou Ação..."
+                      value={searchText}
+                      onChange={(e) => setSearchText(e.target.value)}
+                      className="pl-10 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm focus:ring-blue-500 focus:border-blue-500 placeholder-gray-700 text-gray-900"
+                  />
+                  <Search className="w-4 h-4 text-gray-900 absolute left-3" />
+              </div>
 
-            {/* Filtro de Responsabilidade */}
-            <div className="relative flex items-center">
-                <select 
-                    value={selectedResponsabilidade}
-                    onChange={(e) => setSelectedResponsabilidade(e.target.value)}
-                    className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900"
-                >
-                    <option value="" className="text-gray-900">TODAS RESPONSABILIDADES</option>
-                    {responsabilidadesUnicas.map(r => <option key={r} value={r} className="text-gray-900">{r}</option>)}
-                </select>
-                <User className="w-4 h-4 text-gray-900 absolute left-2" />
-            </div>
+              {/* Filtro de Responsabilidade */}
+              <div className="relative flex items-center">
+                  <select 
+                      value={selectedResponsabilidade}
+                      onChange={(e) => setSelectedResponsabilidade(e.target.value)}
+                      className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900"
+                  >
+                      <option value="" className="text-gray-900">TODAS RESPONSABILIDADES</option>
+                      {responsabilidadesUnicas.map(r => <option key={r} value={r} className="text-gray-900">{r}</option>)}
+                  </select>
+                  <User className="w-4 h-4 text-gray-900 absolute left-2" />
+              </div>
 
-            {/* Filtro de Status do Log */}
-            <div className="relative flex items-center">
-                <select 
-                    value={selectedStatus}
-                    onChange={(e) => setSelectedStatus(e.target.value)}
-                    className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900"
-                >
-                    <option value="" className="text-gray-900">TODOS OS STATUS</option>
-                    {statusLogUnicos.map(s => <option key={s} value={s} className="text-gray-900">{s}</option>)}
-                </select>
-                <CheckCircle className="w-4 h-4 text-gray-900 absolute left-2" />
-            </div>
+              {/* Filtro de Status do Log */}
+              <div className="relative flex items-center">
+                  <select 
+                      value={selectedStatus}
+                      onChange={(e) => setSelectedStatus(e.target.value)}
+                      className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900"
+                  >
+                      <option value="" className="text-gray-900">TODOS OS STATUS</option>
+                      {statusLogUnicos.map(s => <option key={s} value={s} className="text-gray-900">{s}</option>)}
+                  </select>
+                  <CheckCircle className="w-4 h-4 text-gray-900 absolute left-2" />
+              </div>
 
-            <button onClick={() => { setSearchText(''); setSelectedResponsabilidade(''); setSelectedStatus(''); setCurrentPage(1); }}
-                className="ml-4 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-1"
-            >
-                <RotateCcw className="w-4 h-4" />
-                <span>Limpar Filtros</span>
-            </button>
-        </div>
+              <button onClick={() => { setSearchText(''); setSelectedResponsabilidade(''); setSelectedStatus(''); setCurrentPage(1); }}
+                  className="ml-4 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-1"
+              >
+                  <RotateCcw className="w-4 h-4" />
+                  <span>Limpar Filtros</span>
+              </button>
+          </div>
 
-        {/* Tabela de Logs */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-            <LogsTable data={currentData} />
-            
-            {/* SUBSTITUIÇÃO PELA PAGINAÇÃO REUTILIZÁVEL */}
-            <PaginationControls
-                currentPage={currentPage}
-                totalPages={totalPages}
-                currentItemsCount={currentData.length}
-                totalFilteredItems={filteredLogs.length}
-                itemsPerPage={itemsPerPage}
-                setItemsPerPage={setItemsPerPage}
-                setCurrentPage={setCurrentPage}
-            />
+          {/* Tabela de Logs */}
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+              <LogsTable data={currentData} />
+              
+              {/* SUBSTITUIÇÃO PELA PAGINAÇÃO REUTILIZÁVEL */}
+              <PaginationControls
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  currentItemsCount={currentData.length}
+                  totalFilteredItems={filteredLogs.length}
+                  itemsPerPage={itemsPerPage}
+                  setItemsPerPage={setItemsPerPage}
+                  setCurrentPage={setCurrentPage}
+              />
+          </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }

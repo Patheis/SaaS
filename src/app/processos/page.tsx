@@ -1,4 +1,3 @@
-// src/app/processos/page.tsx
 'use client'; 
 
 import Header from '@/components/Layout/Header';
@@ -7,7 +6,7 @@ import { Search, SlidersHorizontal, Zap, MoreHorizontal, Trash2 } from 'lucide-r
 import { Processo, ProcessoStatus } from '@/data/types'; // Tipagem
 
 import PaginationControls from '@/components/UI/PaginationControls'; // Importa o componente de paginação
-
+import DashboardLayout from '@/components/Layout/DashboardLayout'; // ⬅️ IMPORTADO!
 
 // Dados Mockados
 const mockProcessos: Processo[] = [
@@ -20,7 +19,6 @@ const mockProcessos: Processo[] = [
   { id: 7, item: 'Validação de Escopo', dataCriacao: '2025-09-10', processo: 'Processo C', status: 'Em Análise', previsao: 'Média' },
 ];
 
-// Componente de Tabela (sem alteração)
 // Componente de Tabela
 const ProcessosTable = ({ data }: { data: Processo[] }) => {
     const getStatusColor = (status: ProcessoStatus) => {
@@ -42,8 +40,6 @@ const ProcessosTable = ({ data }: { data: Processo[] }) => {
                         <th className="px-6 py-4 text-center text-sm font-bold text-gray-800 uppercase tracking-wider">Ações</th>
                     </tr>
                 </thead>
-                
-                {/* Corpo da Tabela */}
                 <tbody className="bg-white divide-y divide-gray-100"> 
                     {data.map((item) => (
                         <tr key={item.id} className="hover:bg-blue-50/50 transition duration-150"> 
@@ -101,97 +97,98 @@ export default function ProcessosPage() {
   const statusUnicos = useMemo(() => ['Aberto', 'Concluído', 'Em Análise'], []);
 
   return (
-    <div>
-      <Header title="Gestão de Processos" subtitle="Monitoramento e Controle de Itens" />
-      
-      <div className="p-8">
+    // ⬅️ ENVOLVIMENTO CORRETO
+    <DashboardLayout>
+      <div>
+        <Header title="Gestão de Processos" subtitle="Monitoramento e Controle de Itens" />
         
-        {/* Componente de Filtros (Com alto contraste e funcionalidade) */}
-        <div className="bg-white p-4 rounded-xl shadow-lg flex space-x-4 mb-6 items-center border border-gray-200">
-            
-            <h3 className="text-sm font-semibold uppercase text-gray-600">Filtros Ativos:</h3>
+        <div className="p-8">
+          
+          {/* Componente de Filtros (Com alto contraste e funcionalidade) */}
+          <div className="bg-white p-4 rounded-xl shadow-lg flex space-x-4 mb-6 items-center border border-gray-200">
+              
+              <h3 className="text-sm font-semibold uppercase text-gray-600">Filtros Ativos:</h3>
 
-            {/* Filtro de Busca (Search) */}
-            <div className="relative flex items-center">
-                <input 
-                    type="text" 
-                    placeholder="Buscar Item..."
-                    value={searchText}
-                    onChange={(e) => {
-                        setSearchText(e.target.value);
-                        setCurrentPage(1);
-                    }}
+              {/* Filtro de Busca (Search) */}
+              <div className="relative flex items-center">
+                  <input 
+                      type="text" 
+                      placeholder="Buscar Item..."
+                      value={searchText}
+                      onChange={(e) => {
+                          setSearchText(e.target.value);
+                          setCurrentPage(1);
+                      }}
+                      className="pl-10 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm focus:ring-blue-500 focus:border-blue-500 placeholder-gray-700 text-gray-900" 
+                  />
+                  <Search className="w-4 h-4 text-gray-900 absolute left-3" />
+              </div>
 
-                    className="pl-10 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm focus:ring-blue-500 focus:border-blue-500 placeholder-gray-700 text-gray-900" // Corrigido
+              {/* Filtro de Processos */}
+              <div className="relative flex items-center">
+                  <select 
+                      value={selectedProcesso}
+                      onChange={(e) => {
+                          setSelectedProcesso(e.target.value);
+                          setCurrentPage(1);
+                      }}
+                      className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900" 
+                  >
+                      <option value="" className="text-gray-900">TODOS OS PROCESSOS</option>
+                      {processosUnicos.map(p => <option key={p} value={p} className="text-gray-900">{p}</option>)}
+                  </select>
+                  <SlidersHorizontal className="w-4 h-4 text-gray-900 absolute left-2" />
+              </div>
 
-                />
-                <Search className="w-4 h-4 text-gray-900 absolute left-3" />
-            </div>
+              {/* Filtro de Status */}
+              <div className="relative flex items-center">
+                  <select 
+                      value={selectedStatus}
+                      onChange={(e) => {
+                          setSelectedStatus(e.target.value);
+                          setCurrentPage(1);
+                      }}
+                      className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900" 
+                  >
+                      <option value="" className="text-gray-900">TODOS OS STATUS</option>
+                      {statusUnicos.map(s => <option key={s} value={s} className="text-gray-900">{s}</option>)}
+                  </select>
+                  <Zap className="w-4 h-4 text-gray-900 absolute left-2" />
+              </div>
 
-            {/* Filtro de Processos */}
-            <div className="relative flex items-center">
-                <select 
-                    value={selectedProcesso}
-                    onChange={(e) => {
-                        setSelectedProcesso(e.target.value);
-                        setCurrentPage(1);
-                    }}
-                    className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900" 
-                >
-                    <option value="" className="text-gray-900">TODOS OS PROCESSOS</option>
-                    {processosUnicos.map(p => <option key={p} value={p} className="text-gray-900">{p}</option>)}
-                </select>
-                <SlidersHorizontal className="w-4 h-4 text-gray-900 absolute left-2" />
-            </div>
+              {/* Botão Limpar Filtros (Com ícone Trash2) */}
+              <button 
+                  onClick={() => {
+                      setSearchText('');
+                      setSelectedProcesso('');
+                      setSelectedStatus('');
+                      setCurrentPage(1);
+                  }}
+                  className="ml-4 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-1"
+              >
+                  <Trash2 className="w-4 h-4" /> 
+                  <span>Limpar Filtros</span>
+              </button>
 
-            {/* Filtro de Status */}
-            <div className="relative flex items-center">
-                <select 
-                    value={selectedStatus}
-                    onChange={(e) => {
-                        setSelectedStatus(e.target.value);
-                        setCurrentPage(1);
-                    }}
-                    className="pl-8 pr-4 py-2 border border-gray-400 bg-white rounded-md text-sm text-gray-900" 
-                >
-                    <option value="" className="text-gray-900">TODOS OS STATUS</option>
-                    {statusUnicos.map(s => <option key={s} value={s} className="text-gray-900">{s}</option>)}
-                </select>
-                <Zap className="w-4 h-4 text-gray-900 absolute left-2" />
-            </div>
+          </div>
 
-            {/* Botão Limpar Filtros (Com ícone Trash2) */}
-            <button 
-                onClick={() => {
-                    setSearchText('');
-                    setSelectedProcesso('');
-                    setSelectedStatus('');
-                    setCurrentPage(1);
-                }}
-                className="ml-4 text-sm font-semibold text-gray-500 hover:text-gray-700 transition-colors flex items-center space-x-1"
-            >
-                <Trash2 className="w-4 h-4" /> 
-                <span>Limpar Filtros</span>
-            </button>
-
-        </div>
-
-        {/* Componente de Tabela e Paginação */}
-        <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
-            <ProcessosTable data={currentData} />
-            
-            {/* Componente de Paginação Reutilizável */}
-            <PaginationControls
-                currentPage={currentPage}
-                totalPages={totalPages}
-                currentItemsCount={currentData.length}
-                totalFilteredItems={filteredProcessos.length}
-                itemsPerPage={itemsPerPage}
-                setItemsPerPage={setItemsPerPage}
-                setCurrentPage={setCurrentPage}
-            />
+          {/* Componente de Tabela e Paginação */}
+          <div className="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+              <ProcessosTable data={currentData} />
+              
+              {/* Componente de Paginação Reutilizável */}
+              <PaginationControls
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  currentItemsCount={currentData.length}
+                  totalFilteredItems={filteredProcessos.length}
+                  itemsPerPage={itemsPerPage}
+                  setItemsPerPage={setItemsPerPage}
+                  setCurrentPage={setCurrentPage}
+              />
+          </div>
         </div>
       </div>
-    </div>
+    </DashboardLayout>
   );
 }
