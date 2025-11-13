@@ -7,7 +7,7 @@ import { Layout, CheckSquare, BarChart3, Users, Database, Shield, Hourglass, Cli
 
 const dashboardModules = [
   { 
-    title: 'Planejamento', 
+    title: 'Planejamento - ✅', 
     subtitle: 'Definição de escopo e riscos.', 
     bgColor: 'bg-red-600', 
     icon: Layout, 

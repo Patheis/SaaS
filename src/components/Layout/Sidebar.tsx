@@ -7,7 +7,7 @@ const navItems = [
   { href: '/', icon: Home, label: 'Início' },
   { href: '/dashboard-detalhe', icon: BarChart3, label: 'Conclusao' }, 
   { href: '/processos', icon: ClipboardList, label: 'Processos' },
-
+  { href: '/planejamento', icon: Layout, label: 'Planejamento' },
   { href: '/gestao-sistema', icon: Users, label: 'Gestao' },
   { href: '/configuracoes', icon: Settings, label: 'Configurações' },
 ];
